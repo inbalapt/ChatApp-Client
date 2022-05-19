@@ -1,0 +1,25 @@
+.titleCloseBtn {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.titleCloseBtn button {
+    background-color: transparent;
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.record-message {
+    display: flex !important;
+    justify-content: center !important;
+    text-align: center;
+}
+
+.inner-rec-mess {
+    position: relative;
+    padding: 15px;
+    width: 20%;
+    max-width: 640px;
+    background-color: aliceblue;
+}
