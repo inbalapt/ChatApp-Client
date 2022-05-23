@@ -105,44 +105,21 @@ function ChatPage() {
                 return;
             }
         }
-        const formData = {
-            Id: { writtenFriend },
-            Name: { friendDisplayName },
-            Server: { friendServer }
-        }
-        await fetch('https://localhost:7100/api/Contacts/noale10', {
+
+        const user = {connected:"noale10", id:writtenFriend, name:friendDisplayName, server:friendServer};
+        console.log(user);
+        try{
+            await fetch('https://localhost:7100/api/Contacts', {
             method: 'POST',
-            body: JSON.stringify({
-                Id: { writtenFriend },
-                Name: { friendDisplayName },
-                Server: { friendServer }
-            })
-        })
-            .then(response => response.json())
-            .then(result => {
-                console.log('Success:', result);
-            })
-            .catch(error => {
-                console.error('Error:', error);
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(user)
             });
-        //address = 'https://localhost:7100/api/Contacts/'.concat('noale10');
-        /*res = await fetch(address);
-        friendsData = await res.json();
-        console.log(friendsData);*/
-        /*const data = {
-           Id: {writtenFriend},
-           Name: {friendDisplayName},
-           Server: {friendServer}
-        };*/
-        /*axios({
-            method: 'post',
-            url: {address},
-            data: {
-                Id: {writtenFriend},
-                Name: {friendDisplayName},
-                Server: {friendServer}
-            }
-        });*/
+        }
+        catch(err){
+            console.error("nla");
+        }
 
         /*if (userMap.hasOwnProperty(writtenFriend)) {
             if (userMap[username].myFriends.hasOwnProperty(writtenFriend) || writtenFriend === username) {
