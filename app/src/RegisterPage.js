@@ -28,7 +28,7 @@ function RegisterPage() {
         };
         reader.readAsDataURL(file);
     }
-    function conditionUserRegi() {
+    async function conditionUserRegi() {
         //const navigate = useNavigate();
         var userName = document.getElementById("username").value;
         var passWord = document.getElementById("password").value;
@@ -49,11 +49,25 @@ function RegisterPage() {
             alert('The two passwords are not identical.')
             return;
         }
-       //if the user taken
-        if(userMap.hasOwnProperty(userName)){
+      
+        var srtingFetch = 'https://localhost:7100/api/Contacts/';
+        //'https://localhost:7100/api/Contacts/{userName}/password'
+        var flag = 0;
+        let ser_password;
+
+        const rest = await fetch(srtingFetch.concat(userName,'/password'))
+        .then(response => response.text()).then(data => {
+            ser_password = data;
+            console.log(ser_password)});
+
+        //if the user taken
+        if (ser_password == null || ser_password == ''){      
+        }else {
             alert('This username is already taken. Please choose another one.')
             return;
         }
+
+        
         //if the username is invalid
         if (userName.length < 4) {
             alert('The user name should be longer than four characters.')
@@ -94,15 +108,6 @@ function RegisterPage() {
                     </div>
                     <div>
                         Display Name:<input type="name" id="displayname" placeholder="Enter Name"></input>
-                    </div>
-
-                     <div>
-                    <p> Add profile picture <span className='image-uploading'>
-                            <label htmlFor="input-image-id">
-                                <i className="bi bi-image"></i>
-                            </label>
-                            <input className="ng-hide" id="input-image-id" type="file" accept="image/*" onInput={handleAddPicture} />
-                        </span></p>
                     </div>
 
                     <div className='regi'>

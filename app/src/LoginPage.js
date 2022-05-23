@@ -25,8 +25,6 @@ function LoginPage() {
         }
         var srtingFetch = 'https://localhost:7100/api/Contacts/';
         //'https://localhost:7100/api/Contacts/{userName}/password'
-        
-        //var password_server = "";
         var flag = 0;
         let ser_password;
         const rest = await fetch(srtingFetch.concat(userName,'/password'))
