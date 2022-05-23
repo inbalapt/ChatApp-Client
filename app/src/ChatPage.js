@@ -106,7 +106,7 @@ function ChatPage() {
             }
         }
 
-        const user = {connected:"noale10", id:writtenFriend, name:friendDisplayName, server:friendServer};
+        const user = {connected:username, id:writtenFriend, name:friendDisplayName, server:friendServer};
         console.log(user);
         try{
             await fetch('https://localhost:7100/api/Contacts', {
