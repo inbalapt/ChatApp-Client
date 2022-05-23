@@ -7,10 +7,11 @@ import Message from './Message';
 import TopLeftChat from './TopLeftChat';
 import userMap from './usersFolder/usersList.js';
 import { useLocation } from "react-router-dom";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MessagesListResult from './MessagesListResult';
 import SendMessage from './SendMessage'
 import AddFriend from './AddFriend';
+import axios from 'axios';
 //import React, { useRef } from "react";
 
 function ChatPage() {
@@ -22,7 +23,7 @@ function ChatPage() {
     const [msgs, setMsgs] = useState([]);
     const [friendTop, setFriendTop] = useState('');
 
-    
+
     //list of the friends name
 
     const [userFriends, setUserFriends] = useState(userMap);
@@ -65,10 +66,63 @@ function ChatPage() {
 
     const [modalVisible, setModalVisible] = useState(false);
 
+    /* useEffect(()=>{
+         async function something(){
+             console.log("not good");
+             var address = 'https://localhost:7100/api/Contacts/'.concat(username);
+             const res = await fetch(address);
+             console.log("hi");
+         }
+         something(); 
+         //const data = await res.json();
+         
+     },[userFriends])*/
     //add friend
-    function plusFriend() {
+    async function plusFriend() {
         var writtenFriend = document.getElementById("writtenFriend").value;
-        if (userMap.hasOwnProperty(writtenFriend)) {
+        var friendDisplayName = document.getElementById("friendDisplayName").value;
+        var friendServer = document.getElementById("friendServer").value;
+        const result = await fetch('https://localhost:7100/api/Contacts/users');
+        const users = await result.json();
+        var j = 0;
+        var exist = 0;
+        for (; j < users.length; j++) {
+            if (users[j].id == writtenFriend && users[j].server == friendServer && users[j].name == friendDisplayName) {
+                exist = 1;
+            }
+        }
+        if (exist == 0) {
+            console.log("dont exist");
+            return;
+        }
+        var address = 'https://localhost:7100/api/Contacts/'.concat('noale10');
+        const res = await fetch(address);
+        const friendsData = await res.json();
+        console.log(friendsData);
+        var i = 0;
+        for (; i < friendsData.length; i++) {
+            if (writtenFriend == friendsData[i].id && friendDisplayName == friendsData[i].name && friendServer == friendsData[i].server) {
+                console.log("is your friend");
+                return;
+            }
+        }
+        const data = {
+           Id: {writtenFriend},
+           Name: {friendDisplayName},
+           Server: {friendServer}
+        };
+        axios
+            .post(address, data, {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json;charset=UTF-8",
+                },
+            })
+            .then(({ data }) => {
+                console.log(data);
+            });
+
+        /*if (userMap.hasOwnProperty(writtenFriend)) {
             if (userMap[username].myFriends.hasOwnProperty(writtenFriend) || writtenFriend === username) {
                 alert('choose another username');
             }
@@ -83,7 +137,7 @@ function ChatPage() {
         else {
             console.log('bed');
             alert('bedJ');
-        }
+        }*/
 
     }
 
@@ -105,7 +159,7 @@ function ChatPage() {
 
         //the list of the chat info
         var listMessage = www[obj];
-        if (listMessage[0].text === '' && listMessage.length ==1) {
+        if (listMessage[0].text === '' && listMessage.length == 1) {
             last_message = "";
             lastTime = "";
             last_message_type = '';
@@ -116,7 +170,7 @@ function ChatPage() {
             var lastTime = listMessage[listMessage.length - 1].time;
         }
 
-        friends.push({ userFriend: obj, displayName: name, message: last_message, lastMessageType:last_message_type, img: myImage, time: lastTime })
+        friends.push({ userFriend: obj, displayName: name, message: last_message, lastMessageType: last_message_type, img: myImage, time: lastTime })
         friends.sort((a, b) => a.time < b.time ? 1 : -1)
     }
     const userList = friends.map((user, key) => {
@@ -136,20 +190,20 @@ function ChatPage() {
                     </div>
                 </div>
                 <div className="col-9 right-side">
-                    
-                        <div className='friend-top'>
-                            <ChatingWith myUsername={username} friendTop={friendTop} changeTheMsgs={chageTheState} />
-                        </div>
-                        <div className="messages" id="messages">
+
+                    <div className='friend-top'>
+                        <ChatingWith myUsername={username} friendTop={friendTop} changeTheMsgs={chageTheState} />
+                    </div>
+                    <div className="messages" id="messages">
                         <div className="chatings" id="chatings">
                             <MessagesListResult chatFriend={msgs} />
                         </div>
                     </div>
 
-                        <div>
-                            <SendMessage trigger={sendPopup} myUsername={username} addressee={friendTop} changeTheMsgs={chageTheState} />
-                        </div>
-                    
+                    <div>
+                        <SendMessage trigger={sendPopup} myUsername={username} addressee={friendTop} changeTheMsgs={chageTheState} />
+                    </div>
+
                 </div>
                 <AddFriend trigger={buttonPopup} setTrigger={setButtonPopup}>
                     <div className="titleCloseBtn">
@@ -157,6 +211,8 @@ function ChatPage() {
                     </div>
                     <h1>Add Friend</h1>
                     <input id="writtenFriend" placeholder="Enter friend's username"></input>
+                    <input id="friendDisplayName" placeholder="Enter friend's display name"></input>
+                    <input id="friendServer" placeholder="Enter friend's server"></input>
                     <button className="add-button" onClick={() => plusFriend()}>Add</button>
                 </AddFriend>
 
