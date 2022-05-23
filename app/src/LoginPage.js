@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
     let navigate = useNavigate();
-    function conditionUser() {
+    async function conditionUser() {
         var userName = document.getElementById("username").value;
         var password = document.getElementById("password").value;
         userName = userName.trim();
@@ -23,19 +23,28 @@ function LoginPage() {
             alert('Please entar all fields')
             return;
         }
-
+        var srtingFetch = 'https://localhost:7100/api/Contacts/';
+        //'https://localhost:7100/api/Contacts/{userName}/password'
+        
+        //var password_server = "";
+        var flag = 0;
+        let ser_password;
+        const rest = await fetch(srtingFetch.concat(userName,'/password'))
+        .then(response => response.text()).then(data => {
+            ser_password = data;
+            console.log(ser_password)});
+        
        
-        // cheack if the username exiest.
-        if (userMap.hasOwnProperty(userName)) {
-             // cheack if the password correct.
-            //var x = users.username;
-            if( userMap[userName].password.localeCompare(password) != 0){
-                alert('The password is incorrect')
-                return;
-            }
-         // the username does not exiest.
-        } else{
+        console.log(ser_password);
+        // the username does not exiest.
+        if (ser_password == null || ser_password == ''){
             alert('Username is not exist')
+            return;
+        }
+        // cheack if the password correct.
+        if( ser_password.localeCompare(password) != 0){
+            alert('The password is incorrect')
+            return;
         }
 
         navigate("/ChatPage", { state: {username: userName }})
