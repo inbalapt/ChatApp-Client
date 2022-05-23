@@ -46,7 +46,6 @@ function ChatPage() {
         //updateScroll();
     }
 
-
     // change the state when click on user
     const doChoose = function (userFriend) {
         var friendsDic = userMap[username].myFriends;
@@ -106,21 +105,44 @@ function ChatPage() {
                 return;
             }
         }
-        const data = {
+        const formData = {
+            Id: { writtenFriend },
+            Name: { friendDisplayName },
+            Server: { friendServer }
+        }
+        await fetch('https://localhost:7100/api/Contacts/noale10', {
+            method: 'POST',
+            body: JSON.stringify({
+                Id: { writtenFriend },
+                Name: { friendDisplayName },
+                Server: { friendServer }
+            })
+        })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Success:', result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        //address = 'https://localhost:7100/api/Contacts/'.concat('noale10');
+        /*res = await fetch(address);
+        friendsData = await res.json();
+        console.log(friendsData);*/
+        /*const data = {
            Id: {writtenFriend},
            Name: {friendDisplayName},
            Server: {friendServer}
-        };
-        axios
-            .post(address, data, {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json;charset=UTF-8",
-                },
-            })
-            .then(({ data }) => {
-                console.log(data);
-            });
+        };*/
+        /*axios({
+            method: 'post',
+            url: {address},
+            data: {
+                Id: {writtenFriend},
+                Name: {friendDisplayName},
+                Server: {friendServer}
+            }
+        });*/
 
         /*if (userMap.hasOwnProperty(writtenFriend)) {
             if (userMap[username].myFriends.hasOwnProperty(writtenFriend) || writtenFriend === username) {
