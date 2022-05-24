@@ -2,7 +2,8 @@ import './ChatingWith.css';
 import userMap from './usersFolder/usersList';
 import Record from './Record';
 import { useState } from 'react';
-
+import sami from './usersFolder/profile/sami.jpg';
+var topFriendFlag =0;
 function ChatingWith({ myUsername, friendTop, changeTheMsgs }) {
 
     
@@ -19,6 +20,8 @@ function ChatingWith({ myUsername, friendTop, changeTheMsgs }) {
 
     const [srcOfAudio, setSrcOfAudio] = useState();
     const [recMessage, setRecMessage] = useState(false)
+    const [friendName, setFriendName] = useState('');
+
     var record = false;
     var recorder;
     function start() {
@@ -37,16 +40,14 @@ function ChatingWith({ myUsername, friendTop, changeTheMsgs }) {
                     recorder.addEventListener("stop", () => {
                         const audioBlob = new Blob(audioChunks);
                         const audioUrl = URL.createObjectURL(audioBlob);
-                        // the text that we send
-                        //adding the text message to the two converasions.
+                        /*
                         userMap[myUsername].myFriends[friendTop].push({ type: "audio", text: audioUrl, time: time, mine: true });
-                        //userMap[addressee].myFriends[myUsername].push({ type: 1, text: textMessage, time: time, mine: false });
                         //changing the messages state
                         var chatFriend = userMap[myUsername].myFriends[friendTop];
                         //setMsgs(msgs=>fakeChat);
                         changeTheMsgs(chatFriend);
-                        //setVal(() => "")
-                        //setUpdate(false);
+                        */
+                        
                     });
 
                 });
@@ -73,9 +74,11 @@ function ChatingWith({ myUsername, friendTop, changeTheMsgs }) {
         var file = el.files[0];
         //add to the messages
         reader.onload = (e) => {
+            /*
             userMap[myUsername].myFriends[friendTop].push({ type: "image", text: e.target.result, time: time, mine: true });
             var chatFriend = userMap[myUsername].myFriends[friendTop];
             changeTheMsgs(chatFriend);
+            */
         
         };
 
@@ -89,26 +92,56 @@ function ChatingWith({ myUsername, friendTop, changeTheMsgs }) {
         var file = el.files[0];
         //add to the messages
         reader.onload = (e) => {
+            /*
             userMap[myUsername].myFriends[friendTop].push({ type: "video", text: e.target.result, time: time, mine: true });
             var chatFriend = userMap[myUsername].myFriends[friendTop];
             changeTheMsgs(chatFriend);
+            */
            
         };
 
         reader.readAsDataURL(file);
-       
     }
+
+
+    async function getFriendName() {
+        var srtingFetch = 'https://localhost:7100/api/Contacts/';
+        //'https://localhost:7100/api/Contacts/{userName}/password'
+        let ser_name;
+        const rest = await fetch(srtingFetch.concat(friendTop,'/name'))
+        .then(response => response.text()).then(data => {
+            ser_name = data;
+            setFriendName(friendName => data);
+            console.log(ser_name)});
+    }
+    /*
+    async function getLastSeen() {
+        var srtingFetch = 'https://localhost:7100/api/Contacts/';
+        //'https://localhost:7100/api/Contacts/{userName}/password'
+        let ser_name;
+        const rest = await fetch(srtingFetch.concat(friendTop,'/name'))
+        .then(response => response.text()).then(data => {
+            ser_name = data;
+            setFriendName(friendName => data);
+            console.log(ser_name)});
+    }
+    */
+
+    if (topFriendFlag == 0){
+        getFriendName();
+    }
+
 
     return (
         <>
             <div className="container">
                 <div className="row theChat row-cols-2">
                     <div className="col-1 position-relative">
-                        <img id="circle" className="position-absolute top-50 start-50 translate-middle" src={userMap[friendTop].img} alt="..."></img>
+                        <img id="circle" className="position-absolute top-50 start-50 translate-middle" src={sami} alt="..."></img>
                     </div>
                     <div className="col-8">
                         <div className="d-flex w-100 justify-content-between">
-                            <h5 className="mb-1 name">{userMap[friendTop].displayName}</h5>
+                            <h5 className="mb-1 name">{friendName}</h5>
                         </div>
                         <small className="col-2">last seen at 13:47</small>
                     </div>

@@ -13,7 +13,7 @@ import SendMessage from './SendMessage'
 import AddFriend from './AddFriend';
 import axios from 'axios';
 //import React, { useRef } from "react";
-
+var friendsFlag =0;
 function ChatPage() {
 
     const { state } = useLocation();
@@ -22,6 +22,7 @@ function ChatPage() {
 
     const [msgs, setMsgs] = useState([]);
     const [friendTop, setFriendTop] = useState('');
+    const [friends, setFriends] = useState([]);
 
 
     //list of the friends name
@@ -48,12 +49,34 @@ function ChatPage() {
 
 
     // change the state when click on user
-    const doChoose = function (userFriend) {
+    const doChoose = async function (userFriend) {
+
+        console.log("hijiji")
+        //'https://localhost:7100/api/Contacts/inbal33/yoval99/messages'
+        //get the messages
+        var srtingFetch = 'https://localhost:7100/api/Contacts/';
+        const result = await fetch(srtingFetch.concat(username, '/',userFriend, '/messages'));
+        const myMesg = await result.json();
+        var tempMesg = [];
+        for (let i = 0; i < myMesg.length; i++) {
+            var content = myMesg[i].content;
+            var created = myMesg[i].created;
+            var sent = myMesg[i].sent;
+            var type = "text";
+            tempMesg.push({ type: "text", text: content, time: created, mine: sent})
+        }
+
+        setMsgs(msgs => tempMesg);
+        setFriendTop(friendTop => userFriend);
+        setSendPopup(true);
+        /*
         var friendsDic = userMap[username].myFriends;
         var chatFriend = friendsDic[userFriend];
         setMsgs(msgs => chatFriend);
         setFriendTop(friendTop => userFriend);
         setSendPopup(true);
+        */
+
         //updateScroll();
         //divRef.current.scrollIntoView({ behavior: "smooth" })
     }
@@ -146,36 +169,72 @@ function ChatPage() {
         setUserFriends(userFriends => newUserMap);
     }
 
-    // the my friends map
-    const www = userMap[username].myFriends;
-    var friendsName = Object.keys(www);
-    //let i = friends.length;
-    var friends = [];
-    for (let i = 0; i < friendsName.length; i++) {
-        var obj = friendsName[i];
-        var name = userFriends[obj].displayName;
+    //var flag = 0;
 
-        var myImage = userFriends[obj].img;
+    async function addLeftFriend() {
 
-        //the list of the chat info
-        var listMessage = www[obj];
-        if (listMessage[0].text === '' && listMessage.length == 1) {
-            last_message = "";
-            lastTime = "";
-            last_message_type = '';
+        var srtingFetch = 'https://localhost:7100/api/Contacts/';
+        const result = await fetch(srtingFetch.concat(username));
+        const myUsers = await result.json();
+        var tempFriends = [];
+        for (let i = 0; i < myUsers.length; i++) {
+            // obj is the friend name
+            var obj = myUsers[i].id;
+            var name = myUsers[i].name;
+            var myImage = sami;
+            var last_message = myUsers[i].last;
+            var last_message_type = "text";
+            var lastTime = myUsers[i].lastDate;
+
+            /*
+            const obj = Object.assign("", myUsers[i].id);
+            const name = Object.assign("", myUsers[i].name);
+            const last_message = Object.assign("", myUsers[i].last);
+            const lastTime = Object.assign("", myUsers[i].lastDate);
+            
+            var obj = `${myUsers[i].id}`;
+            var name = `${myUsers[i].name}`;
+            var last_message = `${myUsers[i].last}`;
+            var lastTime = `${myUsers[i].lastDate}`;
+            */
+           
+            tempFriends.push({ userFriend: obj, displayName: name, message: last_message, lastMessageType: last_message_type, img: myImage, time: lastTime })
+            tempFriends.sort((a, b) => a.time < b.time ? 1 : -1)
         }
-        else {
-            var last_message = listMessage[listMessage.length - 1].text;
-            var last_message_type = listMessage[listMessage.length - 1].type;
-            var lastTime = listMessage[listMessage.length - 1].time;
-        }
 
-        friends.push({ userFriend: obj, displayName: name, message: last_message, lastMessageType: last_message_type, img: myImage, time: lastTime })
-        friends.sort((a, b) => a.time < b.time ? 1 : -1)
+        
+        setFriends(friends => tempFriends);
+        friendsFlag =1;
+        //return;
+        
     }
+    //var friends = [];
+    if (friendsFlag == 0){
+      addLeftFriend();  
+    }   
+    
     const userList = friends.map((user, key) => {
+            return <User doChoose={doChoose} {...user} key={key} />
+    });
+    
+    console.log(friends);
+
+    var anotherFriends = [
+        { userFriend: "noale10", displayName: "noa", message: "hiii", lastMessageType: "text", img: sami, time: "10:00" },
+        { userFriend: "yoval99", displayName: "yoval", message: "hola hfgjr", lastMessageType: "text", img: sami, time: "17:40" }
+    ];
+    
+    //console.log(anotherFriends);
+    /*
+    const userList = anotherFriends.map((user, key) => {
         return <User doChoose={doChoose} {...user} key={key} />
     });
+    */
+
+   
+    
+    
+   
 
     return (
 

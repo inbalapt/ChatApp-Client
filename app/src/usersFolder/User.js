@@ -14,7 +14,6 @@ function User({ userFriend, displayName, message,lastMessageType, img, time, doC
         lastMs = 'img.png '
     }
 
-    
 
     //last message is audio
     if(lastMessageType.localeCompare('audio') == 0){

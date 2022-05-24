@@ -29,6 +29,7 @@ function SendMessage({trigger, myUsername, addressee, changeTheMsgs }) {
         var hour=addZero(today.getHours())
         var minute=addZero(today.getMinutes())
         var time = hour + ":" + minute;
+        //add to server
         userMap[myUsername].myFriends[addressee].push({ type: "text", text: textMessage, time: time, mine: true });
         //changing the messages state
         var chatFriend = userMap[myUsername].myFriends[addressee];
@@ -37,6 +38,9 @@ function SendMessage({trigger, myUsername, addressee, changeTheMsgs }) {
         //setVal(() => "")
         document.getElementById("text").value = "";
         //setUpdate(false);
+    }
+    async function sendText(){
+
     }
     return (trigger) ? (
         <>
