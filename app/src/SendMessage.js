@@ -4,7 +4,7 @@ import attach from './attach.jpg';
 import ReactDOM from 'react-dom'
 import userMap from './usersFolder/usersList.js';
 import { useState } from 'react';
-function SendMessage({trigger, myUsername, addressee, changeTheMsgs }) {
+function SendMessage({trigger, myUsername, addressee, doChoose }) {
 
     const [update, setUpdate] = useState(true);
     const [val, setVal] = useState();
@@ -30,18 +30,49 @@ function SendMessage({trigger, myUsername, addressee, changeTheMsgs }) {
         var minute=addZero(today.getMinutes())
         var time = hour + ":" + minute;
         //add to server
-        userMap[myUsername].myFriends[addressee].push({ type: "text", text: textMessage, time: time, mine: true });
+        var myNewMessage = {id: 0, content: textMessage, created: time , sent: true};
+        var otherNewMessage = {id: 0, content: textMessage, created: time , sent: false};
+        sendText(myNewMessage,myUsername,addressee);
+        sendText(otherNewMessage, addressee, myUsername);
+        document.getElementById("text").value = "";
         //changing the messages state
         var chatFriend = userMap[myUsername].myFriends[addressee];
         //setMsgs(msgs=>fakeChat);
-        changeTheMsgs(chatFriend);
-        //setVal(() => "")
-        document.getElementById("text").value = "";
-        //setUpdate(false);
-    }
-    async function sendText(){
+        //changeTheMsgs(chatFriend);
+        // sleep time expects milliseconds
+        
+        function sleep (time) {
+            return new Promise((resolve) => setTimeout(resolve, time));
+        }
+        
+        // Usage!
+        sleep(25).then(() => {
+            doChoose(addressee);
+        });
+        
+        //doChoose(addressee);
 
+        
     }
+
+    async function sendText(newMessage, sender, receiver){
+        var srtingFetch = 'https://localhost:7100/api/Contacts/';
+        // add to my user
+        try{
+            await fetch(srtingFetch.concat(sender, '/',receiver, '/messages'), {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(newMessage)
+            });
+        }
+        catch(err){
+            console.error("nla");
+        }
+    }
+    
+
     return (trigger) ? (
         <>
         <div className="text-send">

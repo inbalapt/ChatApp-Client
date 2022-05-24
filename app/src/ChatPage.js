@@ -40,7 +40,7 @@ function ChatPage() {
     */
 
     //function for changing the chat state
-    function chageTheState(chatFriend) {
+    async function chageTheState(chatFriend) {
         //deep clone for rendring
         var newChatFriend = [...chatFriend];
         setMsgs(msgs => newChatFriend);
@@ -64,10 +64,12 @@ function ChatPage() {
             var type = "text";
             tempMesg.push({ type: "text", text: content, time: created, mine: sent})
         }
-
-        setMsgs(msgs => tempMesg);
+        chageTheState(tempMesg)
+        //setMsgs(msgs => tempMesg);
         setFriendTop(friendTop => userFriend);
         setSendPopup(true);
+        setMessageSent (messageSent => !messageSent);
+        setMessageSent2 (messageSent2 => !messageSent2)
         /*
         var friendsDic = userMap[username].myFriends;
         var chatFriend = friendsDic[userFriend];
@@ -86,7 +88,8 @@ function ChatPage() {
     const [buttonPopup, setButtonPopup] = useState(false);
     const [sendPopup, setSendPopup] = useState(false);
 
-    const [modalVisible, setModalVisible] = useState(false);
+    const [messageSent, setMessageSent] = useState(false);
+    const [messageSent2, setMessageSent2] = useState(true);
 
     /* useEffect(()=>{
          async function something(){
@@ -259,7 +262,7 @@ function ChatPage() {
                     </div>
 
                     <div>
-                        <SendMessage trigger={sendPopup} myUsername={username} addressee={friendTop} changeTheMsgs={chageTheState} />
+                        <SendMessage trigger={sendPopup} myUsername={username} addressee={friendTop} doChoose={doChoose} />
                     </div>
 
                 </div>
