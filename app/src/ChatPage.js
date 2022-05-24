@@ -47,7 +47,6 @@ function ChatPage() {
         //updateScroll();
     }
 
-
     // change the state when click on user
     const doChoose = async function (userFriend) {
 
@@ -129,21 +128,21 @@ function ChatPage() {
                 return;
             }
         }
-        const data = {
-           Id: {writtenFriend},
-           Name: {friendDisplayName},
-           Server: {friendServer}
-        };
-        axios
-            .post(address, data, {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json;charset=UTF-8",
-                },
-            })
-            .then(({ data }) => {
-                console.log(data);
+
+        const user = {connected:username, id:writtenFriend, name:friendDisplayName, server:friendServer};
+        console.log(user);
+        try{
+            await fetch('https://localhost:7100/api/Contacts', {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(user)
             });
+        }
+        catch(err){
+            console.error("nla");
+        }
 
         /*if (userMap.hasOwnProperty(writtenFriend)) {
             if (userMap[username].myFriends.hasOwnProperty(writtenFriend) || writtenFriend === username) {
