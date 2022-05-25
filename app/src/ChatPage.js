@@ -72,7 +72,7 @@ function ChatPage() {
                            // to update all the chats
 
                            console.log("we enterrrrrr")
-                           //doChoose(usersent);
+                           //   doChoose(usersent);
                            addLeftFriend();
                            
                            // to update the current open chat.
