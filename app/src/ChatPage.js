@@ -105,7 +105,6 @@ function ChatPage() {
     // change the state when click on user
     const doChoose = async function (userFriend) {
 
-        //'https://localhost:7100/api/Contacts/inbal33/yoval99/messages'
         //get the messages
         var srtingFetch = 'https://localhost:7100/api/Contacts/';
         const result = await fetch(srtingFetch.concat(username, '/',userFriend, '/messages'));
@@ -135,6 +134,10 @@ function ChatPage() {
     
 
    
+<<<<<<< HEAD
+=======
+    //add friend
+>>>>>>> 68c65098a8f8158df86bb7d779e90b9c4f51f915
     async function plusFriend() {
         var writtenFriend = document.getElementById("writtenFriend").value;
         var friendDisplayName = document.getElementById("friendDisplayName").value;
@@ -203,7 +206,32 @@ function ChatPage() {
         }
 
 
+<<<<<<< HEAD
 
+=======
+        /*const userList = friends.map((user, key) => {
+            return <User doChoose={doChoose} {...user} key={key} />
+        });
+        
+        console.log(friends);*/
+
+        /*if (userMap.hasOwnProperty(writtenFriend)) {
+            if (userMap[username].myFriends.hasOwnProperty(writtenFriend) || writtenFriend === username) {
+                alert('choose another username');
+            }
+            else {
+
+                userMap[username].myFriends[writtenFriend] = [{ text: '' }];
+                var newUserMap = JSON.parse(JSON.stringify(userMap))
+                plus(newUserMap);
+                setButtonPopup(false);
+            }
+        }
+        else {
+            console.log('bed');
+            alert('bedJ');
+        }*/
+>>>>>>> 68c65098a8f8158df86bb7d779e90b9c4f51f915
 
     }
 
@@ -249,14 +277,6 @@ function ChatPage() {
     });
     
     console.log(friends);
-
-    
-    //console.log(anotherFriends);
-    /*
-    const userList = anotherFriends.map((user, key) => {
-        return <User doChoose={doChoose} {...user} key={key} />
-    });
-    */
 
 
     return (
