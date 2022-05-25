@@ -4,12 +4,12 @@ import attach from './attach.jpg';
 import ReactDOM from 'react-dom'
 import userMap from './usersFolder/usersList.js';
 import { useState } from 'react';
-function SendMessage({trigger, myUsername, addressee, doChoose , addLeftFriend}) {
+function SendMessage({trigger, myUsername, addressee, doChoose , addLeftFriend, connection}) {
 
     const [update, setUpdate] = useState(true);
     const [val, setVal] = useState();
 
-    function handleSend() {
+    async function handleSend() {
         // the text that we send
         var textMessage = document.getElementById("text").value;
         textMessage = textMessage.trim();
@@ -32,8 +32,12 @@ function SendMessage({trigger, myUsername, addressee, doChoose , addLeftFriend})
         //add to server
         var myNewMessage = {id: 0, content: textMessage, created: time , sent: true};
         var otherNewMessage = {id: 0, content: textMessage, created: time , sent: false};
-        sendText(myNewMessage,myUsername,addressee);
-        sendText(otherNewMessage, addressee, myUsername);
+        sendText(myNewMessage,myUsername,addressee).then(()=>{
+            sendText(otherNewMessage, addressee, myUsername).then(()=>{
+                updateAll();
+            });
+        });
+        
         document.getElementById("text").value = "";
         //changing the messages state
         var chatFriend = userMap[myUsername].myFriends[addressee];
@@ -56,6 +60,14 @@ function SendMessage({trigger, myUsername, addressee, doChoose , addLeftFriend})
 
         
     }
+    async function updateAll(){
+        try {
+            await connection.send('Changed', addressee, myUsername);
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
 
     async function sendText(newMessage, sender, receiver){
         var srtingFetch = 'https://localhost:7100/api/Contacts/add/';
@@ -72,6 +84,16 @@ function SendMessage({trigger, myUsername, addressee, doChoose , addLeftFriend})
         catch(err){
             console.error("nla");
         }
+        // update all
+
+        /*
+        try {
+            await connection.send('Changed', addressee, myUsername);
+        }
+        catch(e) {
+            console.log(e);
+        }
+        */
     }
 
 

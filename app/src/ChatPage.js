@@ -7,11 +7,13 @@ import Message from './Message';
 import TopLeftChat from './TopLeftChat';
 import userMap from './usersFolder/usersList.js';
 import { useLocation } from "react-router-dom";
-import { useEffect, useState } from 'react';
+import { useEffect, useState , useRef} from 'react';
 import MessagesListResult from './MessagesListResult';
 import SendMessage from './SendMessage'
 import AddFriend from './AddFriend';
 import axios from 'axios';
+import { HubConnectionBuilder } from '@microsoft/signalr';
+
 //import React, { useRef } from "react";
 var friendsFlag =0;
 function ChatPage() {
@@ -29,17 +31,68 @@ function ChatPage() {
 
     const [userFriends, setUserFriends] = useState(userMap);
 
+   
+
+    //triger for 
+    const [buttonPopup, setButtonPopup] = useState(false);
+    const [sendPopup, setSendPopup] = useState(false);
+
+    const [messageSent, setMessageSent] = useState(false);
+    const [messageSent2, setMessageSent2] = useState(true);
+
+    // app signalR
+    const [ connection, setConnection ] = useState(null);
+    const latestChat = useRef(null);
+    latestChat.current = msgs;
+
+    useEffect(() => {
+        const newConnection = new HubConnectionBuilder()
+            .withUrl('https://localhost:7100/MyHub')
+            .withAutomaticReconnect()
+            .build();
+
+        setConnection(newConnection);
+    }, []);
+
+    useEffect(() => {
+        if (connection) {
+            connection.start()
+                .then(result => {
+                    console.log('Connected!');
+    
+                    connection.on('ChangeReceived', (usersent, sender) => {
+
+                        /*
+                        const updatedChat = [...latestChat.current];
+                        updatedChat.push(message);
+                        */
+                       //console.log("we enterrrrrrrrrrrr")
+                       
+                       if (usersent == username){
+                           // to update all the chats
+
+                           console.log("we enterrrrrr")
+                           //doChoose(usersent);
+                           addLeftFriend();
+                           
+                           // to update the current open chat.
+                           if (friendTop == sender){
+                               doChoose(sender);
+                           }
+                           
+                           
+                       }
+                       
+                    
+                        //setChat(updatedChat);
+                    });
+                })
+                .catch(e => console.log('Connection failed: ', e));
+        }
+    }, [connection]);
 
 
-    /*
-    //scroll down
-    function updateScroll(){
-        //var element = document.getElementById("chatings");
-        //element.scrollTop = element.offsetHeight;
-        var messageBody = document.querySelector('#messages');
-        messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
-    }
-    */
+
 
     //function for changing the chat state
     async function chageTheState(chatFriend) {
@@ -74,39 +127,14 @@ function ChatPage() {
         setSendPopup(true);
         setMessageSent (messageSent => !messageSent);
         setMessageSent2 (messageSent2 => !messageSent2)
-        /*
-        var friendsDic = userMap[username].myFriends;
-        var chatFriend = friendsDic[userFriend];
-        setMsgs(msgs => chatFriend);
-        setFriendTop(friendTop => userFriend);
-        setSendPopup(true);
-        */
-
-        //updateScroll();
-        //divRef.current.scrollIntoView({ behavior: "smooth" })
+       
     }
 
 
 
-    //triger for 
-    const [buttonPopup, setButtonPopup] = useState(false);
-    const [sendPopup, setSendPopup] = useState(false);
+    
 
-    const [messageSent, setMessageSent] = useState(false);
-    const [messageSent2, setMessageSent2] = useState(true);
-
-    /* useEffect(()=>{
-         async function something(){
-             console.log("not good");
-             var address = 'https://localhost:7100/api/Contacts/'.concat(username);
-             const res = await fetch(address);
-             console.log("hi");
-         }
-         something(); 
-         //const data = await res.json();
-         
-     },[userFriends])*/
-    //add friend
+   
     async function plusFriend() {
         var writtenFriend = document.getElementById("writtenFriend").value;
         var friendDisplayName = document.getElementById("friendDisplayName").value;
@@ -163,38 +191,19 @@ function ChatPage() {
             body: JSON.stringify(invite)
             });
         }
+
         catch(err){
             console.error(err);
         }
-
-
-
-
-
-
-
-        /*const userList = friends.map((user, key) => {
-            return <User doChoose={doChoose} {...user} key={key} />
-        });
-        
-        console.log(friends);*/
-
-        /*if (userMap.hasOwnProperty(writtenFriend)) {
-            if (userMap[username].myFriends.hasOwnProperty(writtenFriend) || writtenFriend === username) {
-                alert('choose another username');
-            }
-            else {
-
-                userMap[username].myFriends[writtenFriend] = [{ text: '' }];
-                var newUserMap = JSON.parse(JSON.stringify(userMap))
-                plus(newUserMap);
-                setButtonPopup(false);
-            }
+        try {
+            await connection.send('Changed', writtenFriend, username);
         }
-        else {
-            console.log('bed');
-            alert('bedJ');
-        }*/
+        catch(e) {
+            console.log(e);
+        }
+
+
+
 
     }
 
@@ -219,18 +228,6 @@ function ChatPage() {
             var last_message = myUsers[i].last;
             var last_message_type = "text";
             var lastTime = myUsers[i].lastDate;
-
-            /*
-            const obj = Object.assign("", myUsers[i].id);
-            const name = Object.assign("", myUsers[i].name);
-            const last_message = Object.assign("", myUsers[i].last);
-            const lastTime = Object.assign("", myUsers[i].lastDate);
-            
-            var obj = `${myUsers[i].id}`;
-            var name = `${myUsers[i].name}`;
-            var last_message = `${myUsers[i].last}`;
-            var lastTime = `${myUsers[i].lastDate}`;
-            */
            
             tempFriends.push({ userFriend: obj, displayName: name, message: last_message, lastMessageType: last_message_type, img: myImage, time: lastTime })
             tempFriends.sort((a, b) => a.time < b.time ? 1 : -1)
@@ -286,7 +283,7 @@ function ChatPage() {
                     </div>
 
                     <div>
-                        <SendMessage trigger={sendPopup} myUsername={username} addressee={friendTop} doChoose={doChoose} addLeftFriend={addLeftFriend} />
+                        <SendMessage trigger={sendPopup} myUsername={username} addressee={friendTop} doChoose={doChoose} addLeftFriend={addLeftFriend} connection={connection} />
                     </div>
 
                 </div>
