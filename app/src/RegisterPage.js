@@ -28,6 +28,22 @@ function RegisterPage() {
         };
         reader.readAsDataURL(file);
     }
+    async function sendText(newMessage, sender, receiver){
+        var srtingFetch = 'https://localhost:7100/api/Contacts/add/';
+        // add to my user
+        try{
+            await fetch(srtingFetch.concat(sender, '/',receiver, '/messages'), {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(newMessage)
+            });
+        }
+        catch(err){
+            console.error("nla");
+        }
+    }
     async function conditionUserRegi() {
         //const navigate = useNavigate();
         var userName = document.getElementById("username").value;
@@ -78,7 +94,23 @@ function RegisterPage() {
             alert('The password should be longer than three characters.')
             return;
         }
-        
+        const newUser = {id : userName, name: display_name, server: "", password: passWord};
+
+        var srtingFetch = 'https://localhost:7100/api/Contacts/new';
+        // add to my user
+        try{
+            await fetch(srtingFetch, {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(newUser)
+            });
+        }
+        catch(err){
+            console.error("nla");
+        }
+
 
         //mean you can register
         userMap[userName] = {
