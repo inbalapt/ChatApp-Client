@@ -52,7 +52,6 @@ function ChatPage() {
     // change the state when click on user
     const doChoose = async function (userFriend) {
 
-        //'https://localhost:7100/api/Contacts/inbal33/yoval99/messages'
         //get the messages
         var srtingFetch = 'https://localhost:7100/api/Contacts/';
         const result = await fetch(srtingFetch.concat(username, '/',userFriend, '/messages'));
@@ -95,17 +94,7 @@ function ChatPage() {
     const [messageSent, setMessageSent] = useState(false);
     const [messageSent2, setMessageSent2] = useState(true);
 
-    /* useEffect(()=>{
-         async function something(){
-             console.log("not good");
-             var address = 'https://localhost:7100/api/Contacts/'.concat(username);
-             const res = await fetch(address);
-             console.log("hi");
-         }
-         something(); 
-         //const data = await res.json();
-         
-     },[userFriends])*/
+   
     //add friend
     async function plusFriend() {
         var writtenFriend = document.getElementById("writtenFriend").value;
@@ -166,11 +155,6 @@ function ChatPage() {
         catch(err){
             console.error(err);
         }
-
-
-
-
-
 
 
         /*const userList = friends.map((user, key) => {
@@ -252,14 +236,6 @@ function ChatPage() {
     });
     
     console.log(friends);
-
-    
-    //console.log(anotherFriends);
-    /*
-    const userList = anotherFriends.map((user, key) => {
-        return <User doChoose={doChoose} {...user} key={key} />
-    });
-    */
 
 
     return (
