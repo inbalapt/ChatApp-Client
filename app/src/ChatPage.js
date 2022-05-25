@@ -29,6 +29,8 @@ function ChatPage() {
 
     const [userFriends, setUserFriends] = useState(userMap);
 
+
+
     /*
     //scroll down
     function updateScroll(){
@@ -259,10 +261,6 @@ function ChatPage() {
     });
     */
 
-   
-    
-    
-   
 
     return (
 
