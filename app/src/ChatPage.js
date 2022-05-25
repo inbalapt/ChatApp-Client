@@ -29,6 +29,8 @@ function ChatPage() {
 
     const [userFriends, setUserFriends] = useState(userMap);
 
+
+
     /*
     //scroll down
     function updateScroll(){
@@ -147,14 +149,35 @@ function ChatPage() {
             setButtonPopup(false);
         }
         catch(err){
-            console.error("nla");
+            console.error(err);
         }
         addLeftFriend();
-        const userList = friends.map((user, key) => {
+
+        const invite = {from:username, to:writtenFriend, server:friendServer};
+        try{
+            await fetch('https://localhost:7100/api/invitations', {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(invite)
+            });
+        }
+        catch(err){
+            console.error(err);
+        }
+
+
+
+
+
+
+
+        /*const userList = friends.map((user, key) => {
             return <User doChoose={doChoose} {...user} key={key} />
         });
         
-        console.log(friends);
+        console.log(friends);*/
 
         /*if (userMap.hasOwnProperty(writtenFriend)) {
             if (userMap[username].myFriends.hasOwnProperty(writtenFriend) || writtenFriend === username) {
@@ -238,10 +261,6 @@ function ChatPage() {
     });
     */
 
-   
-    
-    
-   
 
     return (
 
