@@ -50,11 +50,13 @@ function ChatPage() {
     // change the state when click on user
     const doChoose = async function (userFriend) {
 
-        console.log("hijiji")
         //'https://localhost:7100/api/Contacts/inbal33/yoval99/messages'
         //get the messages
         var srtingFetch = 'https://localhost:7100/api/Contacts/';
         const result = await fetch(srtingFetch.concat(username, '/',userFriend, '/messages'));
+        if(result == null){
+            console.log("null");
+        }
         const myMesg = await result.json();
         var tempMesg = [];
         for (let i = 0; i < myMesg.length; i++) {
@@ -120,7 +122,7 @@ function ChatPage() {
             console.log("dont exist");
             return;
         }
-        var address = 'https://localhost:7100/api/Contacts/'.concat('noale10');
+        var address = 'https://localhost:7100/api/Contacts/'.concat(username);
         const res = await fetch(address);
         const friendsData = await res.json();
         console.log(friendsData);
@@ -133,7 +135,7 @@ function ChatPage() {
         }
 
         const user = {connected:username, id:writtenFriend, name:friendDisplayName, server:friendServer};
-        console.log(user);
+        console.log(username);
         try{
             await fetch('https://localhost:7100/api/Contacts', {
             method: 'POST',
@@ -142,10 +144,17 @@ function ChatPage() {
             },
             body: JSON.stringify(user)
             });
+            setButtonPopup(false);
         }
         catch(err){
             console.error("nla");
         }
+        addLeftFriend();
+        const userList = friends.map((user, key) => {
+            return <User doChoose={doChoose} {...user} key={key} />
+        });
+        
+        console.log(friends);
 
         /*if (userMap.hasOwnProperty(writtenFriend)) {
             if (userMap[username].myFriends.hasOwnProperty(writtenFriend) || writtenFriend === username) {
@@ -216,15 +225,11 @@ function ChatPage() {
     }   
     
     const userList = friends.map((user, key) => {
-            return <User doChoose={doChoose} {...user} key={key} />
+        return <User doChoose={doChoose} {...user} key={key} />
     });
     
     console.log(friends);
 
-    var anotherFriends = [
-        { userFriend: "noale10", displayName: "noa", message: "hiii", lastMessageType: "text", img: sami, time: "10:00" },
-        { userFriend: "yoval99", displayName: "yoval", message: "hola hfgjr", lastMessageType: "text", img: sami, time: "17:40" }
-    ];
     
     //console.log(anotherFriends);
     /*
