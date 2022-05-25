@@ -58,7 +58,7 @@ function SendMessage({trigger, myUsername, addressee, doChoose , addLeftFriend})
     }
 
     async function sendText(newMessage, sender, receiver){
-        var srtingFetch = 'https://localhost:7100/api/Contacts/';
+        var srtingFetch = 'https://localhost:7100/api/Contacts/add/';
         // add to my user
         try{
             await fetch(srtingFetch.concat(sender, '/',receiver, '/messages'), {
