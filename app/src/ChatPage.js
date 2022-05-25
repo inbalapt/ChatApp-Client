@@ -71,13 +71,13 @@ function ChatPage() {
                        if (usersent == username){
                            // to update all the chats
 
-                           console.log("we enterrrrrr")
+                           console.log("we enterrrrrr connection")
                            //   doChoose(usersent);
                            addLeftFriend();
-                           
+                           doChoose(sender);
                            // to update the current open chat.
                            if (friendTop == sender){
-                               doChoose(sender);
+                               console.log("hihihi")
                            }
                            
                            

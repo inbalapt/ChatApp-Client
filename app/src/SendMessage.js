@@ -34,13 +34,16 @@ function SendMessage({trigger, myUsername, addressee, doChoose , addLeftFriend, 
         var otherNewMessage = {id: 0, content: textMessage, created: time , sent: false};
         sendText(myNewMessage,myUsername,addressee).then(()=>{
             sendText(otherNewMessage, addressee, myUsername).then(()=>{
-                updateAll();
+                updateAll().then(()=>{
+                    doChoose(addressee);
+                    addLeftFriend();
+                });
             });
         });
         
         document.getElementById("text").value = "";
         //changing the messages state
-        var chatFriend = userMap[myUsername].myFriends[addressee];
+        //var chatFriend = userMap[myUsername].myFriends[addressee];
         //setMsgs(msgs=>fakeChat);
         //changeTheMsgs(chatFriend);
         // sleep time expects milliseconds
@@ -50,10 +53,12 @@ function SendMessage({trigger, myUsername, addressee, doChoose , addLeftFriend, 
         }
         
         // Usage!
+        /*
         sleep(25).then(() => {
             doChoose(addressee);
             addLeftFriend();
         });
+        */
 
         
         //doChoose(addressee);
