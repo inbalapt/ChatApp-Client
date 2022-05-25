@@ -4,7 +4,7 @@ import attach from './attach.jpg';
 import ReactDOM from 'react-dom'
 import userMap from './usersFolder/usersList.js';
 import { useState } from 'react';
-function SendMessage({trigger, myUsername, addressee, doChoose }) {
+function SendMessage({trigger, myUsername, addressee, doChoose , addLeftFriend}) {
 
     const [update, setUpdate] = useState(true);
     const [val, setVal] = useState();
@@ -48,7 +48,9 @@ function SendMessage({trigger, myUsername, addressee, doChoose }) {
         // Usage!
         sleep(25).then(() => {
             doChoose(addressee);
+            addLeftFriend();
         });
+
         
         //doChoose(addressee);
 
@@ -71,7 +73,7 @@ function SendMessage({trigger, myUsername, addressee, doChoose }) {
             console.error("nla");
         }
     }
-    
+
 
     return (trigger) ? (
         <>

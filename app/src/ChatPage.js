@@ -262,7 +262,7 @@ function ChatPage() {
                     </div>
 
                     <div>
-                        <SendMessage trigger={sendPopup} myUsername={username} addressee={friendTop} doChoose={doChoose} />
+                        <SendMessage trigger={sendPopup} myUsername={username} addressee={friendTop} doChoose={doChoose} addLeftFriend={addLeftFriend} />
                     </div>
 
                 </div>
