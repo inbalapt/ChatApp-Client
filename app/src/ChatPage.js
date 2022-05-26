@@ -182,7 +182,20 @@ function ChatPage() {
 
         const invite = {from:username, to:writtenFriend, server:friendServer};
         try{
-            await fetch('https://localhost:7100/api/invitations', {
+            var srtingFetch = 'https://localhost:7100/api/Contacts/'.concat(username, '/contacts');
+            const result2 = await fetch(srtingFetch);
+            console.log(result2);
+
+            const contacts = await result2.json();
+            var i  = 0;
+            var serverFriend;
+            for (;i<contacts.length; i++){
+                if(contacts[i].id == writtenFriend){
+                    serverFriend = contacts[i].server;
+                    break;
+                }
+            }
+            await fetch('https://'.concat(serverFriend,'/api/invitations'), {
             method: 'POST',
             headers: {
                 'Content-Type':'application/json'

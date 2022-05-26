@@ -33,7 +33,7 @@ function SendMessage({trigger, myUsername, addressee, doChoose , addLeftFriend, 
         var myNewMessage = {id: 0, content: textMessage, created: time , sent: true};
         var otherNewMessage = {id: 0, content: textMessage, created: time , sent: false};
         sendText(myNewMessage,myUsername,addressee).then(()=>{
-            sendText(otherNewMessage, addressee, myUsername).then(()=>{
+            transferFriend(textMessage,myUsername,addressee).then(()=>{
                 updateAll().then(()=>{
                     doChoose(addressee);
                     addLeftFriend();
@@ -99,6 +99,45 @@ function SendMessage({trigger, myUsername, addressee, doChoose , addLeftFriend, 
             console.log(e);
         }
         */
+    }
+
+
+    
+    async function transferFriend(newMessage, sender, receiver){
+        try{
+            var srtingFetch = 'https://localhost:7100/api/Contacts/'.concat(sender, '/contacts');
+            const result2 = await fetch(srtingFetch);
+            console.log(result2);
+
+            const contacts = await result2.json();
+            var i  = 0;
+            var serverFriend;
+            for (;i<contacts.length; i++){
+                if(contacts[i].id == receiver){
+                    serverFriend = contacts[i].server;
+                    break;
+                }
+            }
+        }catch(e){
+            console.error(e)
+            return;
+        }
+        
+        const invited = {from:sender, to:receiver, server:newMessage}
+        // add to my user
+        try{
+            const addre= 'https://'
+            await fetch(addre.concat(serverFriend,'/api/transfer'), {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(invited)
+            });
+        }
+        catch(err){
+            console.error("i");
+        }
     }
 
 
