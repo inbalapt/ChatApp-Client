@@ -1,7 +1,6 @@
-# web-client2
 # In-Chat Project based on Server communication by Inbal & Noa
 Meet our chat for contact and share data.
-## The required installations. 
+## The required installations-
 * npm
 * node.js
 * react-router-dom
