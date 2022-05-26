@@ -76,6 +76,9 @@ function LoginPage() {
                             Login
                         </button>
                     </div>
+                    <div>
+                        <p>To rate <a href="https://localhost:7032/Rates/Index" className="h">click here</a></p>
+                    </div>
                 </div>
 
             </div>
