@@ -60,7 +60,6 @@ function SendMessage({trigger, myUsername, addressee, doChoose , addLeftFriend, 
         });
         */
 
-        
         //doChoose(addressee);
 
         
