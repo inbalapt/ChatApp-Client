@@ -112,21 +112,9 @@ function ChatingWith({ myUsername, friendTop, changeTheMsgs }) {
         .then(response => response.text()).then(data => {
             ser_name = data;
             setFriendName(friendName => data);
-            console.log(ser_name)});
+            });
     }
-    /*
-    async function getLastSeen() {
-        var srtingFetch = 'https://localhost:7100/api/Contacts/';
-        //'https://localhost:7100/api/Contacts/{userName}/password'
-        let ser_name;
-        const rest = await fetch(srtingFetch.concat(friendTop,'/name'))
-        .then(response => response.text()).then(data => {
-            ser_name = data;
-            setFriendName(friendName => data);
-            console.log(ser_name)});
-    }
-    */
-
+    
     if (topFriendFlag == 0){
         getFriendName();
     }

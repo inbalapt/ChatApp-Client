@@ -20,7 +20,7 @@ function TopLeftChat({ username, plus , setButtonPopup}) {
         .then(response => response.text()).then(data => {
             ser_name = data;
             setName(myName => data);
-            console.log(ser_name)});
+            });
     }
 
     if (topLeftFlag == 0){

@@ -59,26 +59,21 @@ function ChatPage() {
         if (connection) {
             connection.start()
                 .then(result => {
-                    console.log('Connected!');
+                    
     
                     connection.on('ChangeReceived', (usersent, sender) => {
 
-                        /*
-                        const updatedChat = [...latestChat.current];
-                        updatedChat.push(message);
-                        */
-                       //console.log("we enterrrrrrrrrrrr")
                        
                        if (usersent == username){
                            // to update all the chats
 
-                           console.log("we enterrrrrr connection")
+                           
                            //   doChoose(usersent);
                            addLeftFriend();
                            
                            // to update the current open chat.
                            if (theFriendTop.current == sender){
-                               console.log("hihihi")
+                               
                                doChoose(sender);
                            }
                            
@@ -110,9 +105,7 @@ function ChatPage() {
         //get the messages
         var srtingFetch = 'https://localhost:7100/api/Contacts/';
         const result = await fetch(srtingFetch.concat(username, '/',userFriend, '/messages'));
-        if(result == null){
-            console.log("null");
-        }
+        
         const myMesg = await result.json();
         var tempMesg = [];
         for (let i = 0; i < myMesg.length; i++) {
@@ -157,17 +150,17 @@ function ChatPage() {
         var address = 'https://localhost:7100/api/Contacts/'.concat(username);
         const res = await fetch(address);
         const friendsData = await res.json();
-        console.log(friendsData);
+       
         var i = 0;
         for (; i < friendsData.length; i++) {
             if (writtenFriend == friendsData[i].id && friendDisplayName == friendsData[i].name && friendServer == friendsData[i].server) {
-                console.log("is your friend");
+                
                 return;
             }
         }
 
         const user = {connected:username, id:writtenFriend, name:friendDisplayName, server:friendServer};
-        console.log(username);
+        
         try{
             await fetch('https://localhost:7100/api/Contacts', {
             method: 'POST',
@@ -187,7 +180,7 @@ function ChatPage() {
         try{
             var srtingFetch = 'https://localhost:7100/api/Contacts/'.concat(username, '/contacts');
             const result2 = await fetch(srtingFetch);
-            console.log(result2);
+            
 
             const contacts = await result2.json();
             var i  = 0;
@@ -262,7 +255,7 @@ function ChatPage() {
         return <User doChoose={doChoose} {...user} key={key} />
     });
     
-    console.log(friends);
+    
 
 
     return (

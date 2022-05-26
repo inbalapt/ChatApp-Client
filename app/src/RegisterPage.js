@@ -74,7 +74,7 @@ function RegisterPage() {
         const rest = await fetch(srtingFetch.concat(userName,'/password'))
         .then(response => response.text()).then(data => {
             ser_password = data;
-            console.log(ser_password)});
+            });
 
         //if the user taken
         if (ser_password == null || ser_password == ''){      

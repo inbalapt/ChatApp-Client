@@ -17,7 +17,7 @@ function SendMessage({trigger, myUsername, addressee, doChoose , addLeftFriend, 
             document.getElementById("text").value = "";
             return;
         }
-        console.log(userMap);
+        
         //adding the text message to the two converasions.
         function addZero(variable){
             if(variable < 10){
@@ -88,16 +88,7 @@ function SendMessage({trigger, myUsername, addressee, doChoose , addLeftFriend, 
         catch(err){
             console.error("nla");
         }
-        // update all
-
-        /*
-        try {
-            await connection.send('Changed', addressee, myUsername);
-        }
-        catch(e) {
-            console.log(e);
-        }
-        */
+        
     }
 
 
@@ -106,7 +97,7 @@ function SendMessage({trigger, myUsername, addressee, doChoose , addLeftFriend, 
         try{
             var srtingFetch = 'https://localhost:7100/api/Contacts/'.concat(sender, '/contacts');
             const result2 = await fetch(srtingFetch);
-            console.log(result2);
+            
 
             const contacts = await result2.json();
             var i  = 0;
