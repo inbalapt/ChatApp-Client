@@ -23,6 +23,7 @@ function ChatPage() {
     //const divRef = useRef();
 
     const [msgs, setMsgs] = useState([]);
+    const theFriendTop = useRef(''); 
     const [friendTop, setFriendTop] = useState('');
     const [friends, setFriends] = useState([]);
 
@@ -74,10 +75,11 @@ function ChatPage() {
                            console.log("we enterrrrrr connection")
                            //   doChoose(usersent);
                            addLeftFriend();
-                           doChoose(sender);
+                           
                            // to update the current open chat.
-                           if (friendTop == sender){
+                           if (theFriendTop.current == sender){
                                console.log("hihihi")
+                               doChoose(sender);
                            }
                            
                            
@@ -123,6 +125,7 @@ function ChatPage() {
         chageTheState(tempMesg)
         //setMsgs(msgs => tempMesg);
         setFriendTop(friendTop => userFriend);
+        theFriendTop.current = userFriend;
         setSendPopup(true);
         setMessageSent (messageSent => !messageSent);
         setMessageSent2 (messageSent2 => !messageSent2)
