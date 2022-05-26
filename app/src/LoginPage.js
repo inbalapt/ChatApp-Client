@@ -30,10 +30,9 @@ function LoginPage() {
         const rest = await fetch(srtingFetch.concat(userName,'/password'))
         .then(response => response.text()).then(data => {
             ser_password = data;
-            console.log(ser_password)});
+            });
         
        
-        console.log(ser_password);
         // the username does not exiest.
         if (ser_password == null || ser_password == ''){
             alert('Username is not exist')
