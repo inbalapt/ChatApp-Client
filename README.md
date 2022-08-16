@@ -5,6 +5,7 @@ Meet our chat for contact and share data.
 * node.js
 * react-router-dom
 * @microsoft/signalr
+these installations should be in the app directory.
 ## What our chat do?
 We created chat, which support sharing text messages by using server.
 ### How should i use the chat?
@@ -28,7 +29,7 @@ username = michal321, password = 0987. <br/>
 *to see the chat we created in hard-coded, use one of the usernames and passowrds above.*
 ## How to run the project?
 We have to run the server first, run this server repositorie - https://github.com/inbalapt/ServerApp.git - run the ServerApi folder.
-After the server is runing, inside the app directory you need to run the following command -
+After the server is runing, inside the app directory you need to install the required installations above and run the following command -
 ```bash
 npm start
 ```
