@@ -29,7 +29,7 @@ username = michal321, password = 0987. <br/>
 *to see the chat we created in hard-coded, use one of the usernames and passowrds above.*
 ## How to run the project?
 We have to run the server first, run this server repository - https://github.com/inbalapt/ServerApp.git - run the ServerApi folder.
-After the server is runing, inside the app directory you need to install the required installations above and run the following command -
+After the server is runing, *inside* the app directory you need to install the required installations above and run the following command -
 ```bash
 npm start
 ```
