@@ -1,7 +1,7 @@
 # In-Chat Project based on Server communication by Inbal & Noa
 Meet our chat for contact and share data.
 ## The required installations-
-these installations should be in the app directory.
+the installations should be in the app directory.
 * npm
 * node.js
 * react-router-dom
