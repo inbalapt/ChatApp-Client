@@ -1,11 +1,11 @@
 # In-Chat Project based on Server communication by Inbal & Noa
 Meet our chat for contact and share data.
 ## The required installations-
+these installations should be in the app directory.
 * npm
 * node.js
 * react-router-dom
 * @microsoft/signalr
-these installations should be in the app directory.
 ## What our chat do?
 We created chat, which support sharing text messages by using server.
 ### How should i use the chat?
